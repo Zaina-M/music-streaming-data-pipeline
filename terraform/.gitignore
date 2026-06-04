@@ -1,0 +1,92 @@
+# =============================================================================
+# Terraform
+# =============================================================================
+
+# Local state and lock files — never commit these. State can contain secrets.
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Variable files that may contain secrets/email/account IDs
+*.tfvars
+*.tfvars.json
+!terraform.tfvars.example
+
+# Plan output (binary, can contain sensitive values). Two patterns so we
+# catch both `terraform plan -out=tfplan` (no extension — the most common
+# default) and `terraform plan -out=foo.tfplan` (with extension).
+tfplan
+tfplan-*
+*.tfplan
+
+# .terraform/ directory holds downloaded providers and module caches
+.terraform/
+.terraform.lock.hcl
+
+# Override files — Terraform loads these automatically. Anything matching
+# is considered local-developer overrides and should NEVER be committed.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Lambda build artifacts (zipped sources)
+*.zip
+
+# =============================================================================
+# Python (Lambda + Glue scripts, pytest)
+# =============================================================================
+
+# Bytecode + caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.Python
+
+# Virtual environments (any common name)
+.venv/
+venv/
+env/
+ENV/
+
+# pytest + coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.tox/
+.nox/
+
+# mypy / ruff / pyright caches
+.mypy_cache/
+.ruff_cache/
+.pyright/
+
+# =============================================================================
+# PySpark (test runs leave these behind on some platforms)
+# =============================================================================
+
+# Default Spark warehouse + Derby metastore. conftest.py routes these to
+# tempdirs, but legacy runs / IDE-launched tests may still drop them here.
+spark-warehouse/
+metastore_db/
+derby.log
+
+# =============================================================================
+# Editors / IDEs / OS
+# =============================================================================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+.DS_Store
+Thumbs.db
