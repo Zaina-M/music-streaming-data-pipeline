@@ -1,0 +1,24 @@
+# Test dependencies for the Music Streaming ETL pipeline.
+#
+# Install with:
+#   pip install -r tests/requirements-test.txt
+#
+# These are NOT runtime dependencies of the production Lambdas / Glue
+# jobs — those run inside AWS-managed environments. This file only
+# matters when running pytest locally or in CI.
+
+# Test runner
+pytest>=8.0.0
+pytest-mock>=3.12.0
+
+# Mock AWS — moto stubs out boto3 calls in-process. Far faster and more
+# reliable than spinning up localstack containers.
+moto[s3,sqs,stepfunctions,sts]>=5.0.0
+
+# boto3 is provided by Lambda/Glue runtimes; we need it locally too.
+boto3>=1.34.0
+
+# PySpark for unit-testing the Glue Spark scripts. Heavy install; skip
+# if you only want to run the Lambda tests:
+#   pytest tests/lambda_tests
+pyspark>=3.5.0
