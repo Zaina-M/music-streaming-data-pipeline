@@ -184,11 +184,27 @@ aws s3 cp "../../../Project 1 -- ETL with s3, dynamo and glue/data/streams/strea
           "s3://$RAW_BUCKET/streams/streams1.csv"
 ```
 
+Confirm the upload landed under `streams/` in the raw bucket — that prefix is what EventBridge filters on, so anything outside it is silently ignored:
+
+![Raw bucket streams/ prefix after upload](<../Images/archive_image.png>)
+
 Watch the execution in the AWS console:
 
 * **Step Functions → State machines →** `music-streaming-develop-pipeline` → click the latest execution. You'll see Validate → Transform → Load → Archive light up green.
+
+  ![Step Functions execution — all stages succeeded](<../Images/stepfunction_image.png>)
+
+  Each upload becomes one execution in the list (serialized by the SQS FIFO layer, so they run back-to-back, never in parallel):
+
+  ![Step Functions executions list — two succeeded runs](<../Images/image_2.png>)
+
 * **DynamoDB → Tables** → open each of the 3 KPI tables and verify items appear under the matching date partition.
-* **S3 → archive bucket** → the original file should now be there; it should be gone from the raw bucket.
+
+  ![DynamoDB — 3 KPI tables active](<../Images/image_3.png>)
+
+* **S3 → archive bucket** → the original file should now be there; it should be gone from the raw bucket. After two pipeline runs, both source files end up under `archive/streams/`:
+
+  ![Archive bucket after two successful runs](<../Images/image_4.png>)
 
 ---
 
