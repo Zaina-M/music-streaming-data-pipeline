@@ -2,6 +2,13 @@
 
 End-to-end AWS data pipeline provisioned with Terraform.
 
+![Pipeline architecture](docs/pipeline-architecture.png)
+
+For a guided tour of the diagram — what the five zones mean, how to read the arrows, and why each piece exists — see [WALKTHROUGH.md → Reading the architecture diagram](WALKTHROUGH.md#reading-the-architecture-diagram). 
+
+<details>
+<summary>Text-only flow (screen-reader friendly)</summary>
+
 ```
 S3 (raw)  →  EventBridge  →  SQS FIFO  →  Trigger Lambda  →  Step Functions  →  Glue Validate
                                                                               →  Glue Transform  →  S3 Processed (Parquet)
@@ -10,6 +17,8 @@ S3 (raw)  →  EventBridge  →  SQS FIFO  →  Trigger Lambda  →  Step Functi
                                                                                                   ↓ on failure
                                                                                                 CloudWatch  →  SNS
 ```
+
+</details>
 
 The SQS FIFO + Trigger Lambda layer **serializes pipeline executions** — only one ETL run happens at a time, regardless of how many files land in S3 simultaneously. This prevents race conditions where parallel runs would overwrite each other's DynamoDB writes.
 
